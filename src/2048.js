@@ -57,18 +57,6 @@ class Game {
     return value => value !== null;
   }
 
-  getCellValue(row, col) {
-    return this.board[row][col];
-  }
-
-  setCellValue(row, col, value) {
-    this.board[row][col] = value;
-  }
-
-  getRowValue(rowIndex) {
-    return this.board[rowIndex];
-  }
-
   slideLeft() {
     for (let i = 0; i < edgeSize; i++) {
       this.board[i] = slideRow(this.board[i]);
@@ -78,15 +66,38 @@ class Game {
   }
 
   slideRight() {
+    for (let i = 0; i < edgeSize; i++) {
+      this.board[i] = slideRow(this.board[i].reverse()).reverse();
+    }
     return this.board;
   }
 
   slideUp() {
+    for (let i = 0; i < edgeSize; i++) {
+      this.setColumnValues(i, slideRow(this.getColumnValues(i)));
+    }
     return this.board;
   }
 
   slideDown() {
+    for (let i = 0; i < edgeSize; i++) {
+      this.setColumnValues(i, slideRow(this.getColumnValues(i).reverse()).reverse());
+    }
     return this.board;
+  }
+
+  getColumnValues(colIndex) {
+    let values = [];
+    for (let i = 0; i < edgeSize; i++) {
+      values.push(this.board[i][colIndex]);
+    }
+    return values;
+  }
+
+  setColumnValues(colIndex, values) {
+    for (let i = 0; i < edgeSize; i++) {
+      this.board[i][colIndex] = values[i];
+    }
   }
 }
 

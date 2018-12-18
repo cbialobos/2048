@@ -1,27 +1,30 @@
 "use strict";
 
 function slideArray(values) {
-  let row = values.slice();
-  row.push(null); //sentinelle
+  let newArray = Array(values.length).fill(null);
+  //j : index
+  // curPos: where to put new value
   for (let curPos = 0, j = 0; j < values.length; j++) {
-    if (row[j] === null) {
+    if (values[j] === null) {
       continue;
     }
 
-    row[curPos] = row[j];
-    if (curPos !== j) {
-      row[j] = null;
-    }
-    if (row[j + 1] === row[curPos]) {
-      row[curPos] *= 2;
-      j++;
-      row[j] = null;
+    if (newArray[curPos] === null) {
+      newArray[curPos] = values[j];
+      continue;
     }
 
-    curPos++;
+    if (newArray[curPos] === values[j]) {
+      newArray[curPos] *= 2;
+      curPos++;
+    }
+    else {
+      curPos++;
+      newArray[curPos] = values[j];
+    }
+
   }
-  row.pop(); // remove sentinelle
-  return row;
+  return newArray;
 }
 
 module.exports = slideArray;
