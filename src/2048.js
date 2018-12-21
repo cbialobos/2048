@@ -10,13 +10,13 @@ class Game {
   }
 
   getNextValue() {
-    return Math.round(Math.random() * (2 - 1));
+    return (Math.floor(Math.random() * 2) + 1) * 2;
   }
 
   getRandom() {
     const newValue = this.getNextValue();
-    const x = Math.round(Math.random() * (edgeSize - 1));
-    const y = Math.round(Math.random() * (edgeSize - 1));
+    const x = Math.floor(Math.random() * edgeSize);
+    const y = Math.floor(Math.random() * edgeSize);
     return { value: newValue, column: y, row: x };
   }
 
@@ -70,7 +70,7 @@ class Game {
     do {
       randomCell = this.getRandom();
     } while (!this.isBusy(this.board[randomCell.column][randomCell.row]));
-    this.board[randomCell.column][randomCell.row] = randomCell.value * 2;
+    this.board[randomCell.column][randomCell.row] = randomCell.value;
   }
 
   compareArray(array1, array2) {

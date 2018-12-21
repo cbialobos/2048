@@ -31,11 +31,8 @@ describe("2048", () => {
       [null, null, null, null]
     ];
 
-    expect(game.slideLeft()).toEqual([
-      [2, 4, null, null],
-      [null, null, null, null],
-      [null, null, null, null],
-      [null, null, null, null]
-    ]);
+    const result = game.slideLeft();
+    expect(result[0][0]).toEqual(2);
+    expect(result[0][1]).toEqual(4);
   });
 });
