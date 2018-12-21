@@ -1,5 +1,5 @@
 "use strict";
-const slideRow = require("./slideArray");
+import slideRow from "./slideArray";
 
 const edgeSize = 4;
 
@@ -22,19 +22,9 @@ class Game {
   play() {
     this.reset();
 
-    let randomCell1 = this.getRandom();
-    this.board[randomCell1.column - 1][randomCell1.row - 1] =
-      randomCell1.value * 2;
+    this.addNewNumber();
+    this.addNewNumber();
 
-    let randomCell2 = this.getRandom();
-    while (
-      randomCell1.column === randomCell2.column &&
-      randomCell1.row === randomCell2.row
-    ) {
-      randomCell2 = this.getRandom();
-    }
-    this.board[randomCell2.column - 1][randomCell2.row - 1] =
-      randomCell2.value * 2;
     return this.board;
   }
 
@@ -58,13 +48,53 @@ class Game {
   }
 
   slideLeft() {
+    let hadChanges = false;
     for (let i = 0; i < edgeSize; i++) {
-      this.board[i] = slideRow(this.board[i]);
+      const newLocal = slideRow(this.board[i]);
+      hadChanges = this.compareArray(newLocal, this.board[i])
+      this.board[i] = newLocal;
     }
-    const number = this.getNextValue();
+
+    if (hadChanges) {
+      const number = this.getNextValue();
+      this.addNewNumber();
+    }  
+
     return this.board;
   }
 
+
+  playTurn(action) {
+    let hadChanges = false;
+    for (let i = 0; i < edgeSize; i++) {
+      const newLocal = slideRow(this.board[i]);
+      hadChanges = this.compareArray(newLocal, this.board[i])
+      this.board[i] = newLocal;
+    }
+
+    if (hadChanges) {
+      const number = this.getNextValue();
+      this.addNewNumber();
+    }  
+
+    return this.board;
+  }
+
+
+  addNewNumber() {
+    let randomCell = this.getRandom();
+    while (
+      !this.isBusy(this.board[randomCell.column - 1][randomCell.row - 1])) {
+        randomCell = this.getRandom();
+    }
+    this.board[randomCell.column - 1][randomCell.row - 1] =
+    randomCell.value * 2;
+  }
+
+  compareArray(array1, array2) {
+    return array1.length === array2.length && array1.every((value, index) => value === array2[index]);
+  }
+  
   slideRight() {
     for (let i = 0; i < edgeSize; i++) {
       this.board[i] = slideRow(this.board[i].reverse()).reverse();
@@ -101,4 +131,4 @@ class Game {
   }
 }
 
-module.exports = Game;
+export default Game;
