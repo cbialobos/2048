@@ -1,5 +1,3 @@
-"use strict";
-
 function slideArray(values) {
   let newArray = Array(values.length).fill(null);
   //j : index
